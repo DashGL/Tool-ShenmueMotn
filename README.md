@@ -53,7 +53,7 @@ this works is that all of the characters share the same skeleton, and everything
 from cat walking to kicks and punches are included in this one large file. This
 file is persisted in the game's memory.
 
-```
+```c
 typedef struct {
 	uint32_t tableOfs;
 	uint32_t nameOfs;
@@ -71,7 +71,18 @@ Likewise the `nameOfs` provides an offset to where the animation names are defin
 
 ## Header
 
-- Length of each block
+```c
+typedef struct {
+	uint16_t animLength;
+	uint16_t block1Ofs;
+	uint16_t block2Ofs;
+	uint16_t block3Ofs;
+	uint16_t block4Ofs;
+	uint16_t block5Ofs;
+} 
+```
+
+Each animation in the animation section has a small header with a length of 0x12 bytes. The first value is the length of the animation in frames. And the rest of the five values are the relative offsets to the different blocks from the start of the animation definition. With the exception of block 1, which is actually a fixed values of 0x12. 
 
 ## Block 1
 
