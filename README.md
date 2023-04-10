@@ -26,6 +26,8 @@ $ node main.js
 
 # List of Bones
 
+- Provide a list of bones
+
 # Motion (.motn) Format
 
 This section covers technical information about the .motn format used in Shenmue.
@@ -44,15 +46,12 @@ The binary is broken down into "blocks" in order to get to the values per keyfra
 This document will provide the steps for reading each of the blocks needed
 to parse the values for the animation. 
 
-## Name Table
+## File Structure
 
 The .motn file contains all of the animations in the game for Shenmue. The way
-this works is that all of the characters share the same skeleton. And all of
-the animations are loaded into one motion file that gets loaed into memory
-and used through out all of the gameplay. 
-
-There are more than 300 animations, and everything from cat walking to 
-kicks and punches are included in this one large file.
+this works is that all of the characters share the same skeleton, and everything 
+from cat walking to kicks and punches are included in this one large file. This
+file is persisted in the game's memory.
 
 ```
 typedef struct {
@@ -64,6 +63,11 @@ typedef struct {
 } MotnFileHeader_t;
 ```
 
+The first 0x14 bytes that make up the header are shown by the struct above. The first value to bring attention to is the `animCount`. This contains the number of animations in the file. The `dataOfs` provides a pointer to the start of the section of the file where the animation values can be parsed. The `tableOfs` contains a list of pointers relative to the start of the `dataOfs`. The number of pointers being provided by the `animCount`. 
+
+Likewise the `nameOfs` provides an offset to where the animation names are defined. The start of the names section contains a list of points to the actual string values. All of the values except for the last one will be zero terminated. The last animation string name is terminated by the start of the animation section. The figure below shows an outline of the structure of the file.
+
+![motn-file](https://user-images.githubusercontent.com/25621780/230980203-b36b5789-9537-4692-8167-55138042d41f.png)
 
 ## Header
 
