@@ -65,9 +65,9 @@ typedef struct {
 
 The first 0x14 bytes that make up the header are shown by the struct above. The first value to bring attention to is the `animCount`. This contains the number of animations in the file. The `dataOfs` provides a pointer to the start of the section of the file where the animation values can be parsed. The `tableOfs` contains a list of pointers relative to the start of the `dataOfs`. The number of pointers being provided by the `animCount`. 
 
-Likewise the `nameOfs` provides an offset to where the animation names are defined. The start of the names section contains a list of points to the actual string values. All of the values except for the last one will be zero terminated. The last animation string name is terminated by the start of the animation section. The figure below shows an outline of the structure of the file.
-
 ![motn-file](https://user-images.githubusercontent.com/25621780/230980203-b36b5789-9537-4692-8167-55138042d41f.png)
+
+Likewise the `nameOfs` provides an offset to where the animation names are defined. The start of the names section contains a list of points to the actual string values. All of the values except for the last one will be zero terminated. The last animation string name is terminated by the start of the animation section. The figure above shows an outline of the structure of the file.
 
 ## Header
 
@@ -83,6 +83,10 @@ typedef struct {
 ```
 
 Each animation in the animation section has a small header with a length of 0x12 bytes. The first value is the length of the animation in frames. And the rest of the five values are the relative offsets to the different blocks from the start of the animation definition. With the exception of block 1, which is actually a fixed values of 0x12. 
+
+![anim-offsets](https://user-images.githubusercontent.com/25621780/230983693-b034a5ac-b6b6-4f60-9304-6a5635260d3b.png)
+
+The figure above shows this relationship visually. The file header contains the offset to the start of the animation section. The animOfs table, provides the relative start to a specific animation from the start of the animation section. And each animation provides offsets to the blocks inside the animation from the start of the animation definition. 
 
 ## Block 1
 
