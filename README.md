@@ -79,7 +79,7 @@ typedef struct {
 	uint16_t block3Ofs;
 	uint16_t block4Ofs;
 	uint16_t block5Ofs;
-} 
+} MotnAnimHeader_t;
 ```
 
 Each animation in the animation section has a small header with a length of 0x12 bytes. The first value is the length of the animation in frames. And the rest of the five values are the relative offsets to the different blocks from the start of the animation definition. With the exception of block 1, which is actually a fixed values of 0x12. 
