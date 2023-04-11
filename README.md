@@ -117,7 +117,7 @@ For axis, the first and last keyframe are implied. That means is that for exampl
 
 ## Block 3
 
-- Specific Key frames
+Following Block 2, Block 2 contains a list of bytes for the specific intermediate key frame numbers. The first and last key frames are implicit. So for example, if 3 intermediate key frames were defined for a key frame in block 2. The values for those frames could be defined as 12, 18, 22. The first frame is 0. The last frame is defined by `frameCount` in the header, which could be for example 36. Which means the full sequence of keyframes for a bone-axis would be 0, 12, 18, 22, 36. 
 
 ## Block 4
 
