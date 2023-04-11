@@ -90,7 +90,24 @@ The figure above shows this relationship visually. The file header contains the 
 
 ## Block 1
 
-- Bone Id + axis
+Block 1 is a list of bone ids and which axis as defined for motion within that animation. This section is a zero-terminated list comprised of uint16_t values. The structure of each one of the uint16_t values is shown in the figure below.
+
+![block1](https://user-images.githubusercontent.com/25621780/231078514-4d2c5d0c-6a14-4d46-b870-86d33e7eb0dd.png)
+
+The first three bits of the uint16_t have no function. The next three bits are bitflags indicating the bone has rotation x, y, z and values for each one of their axis respective of their individual bits. Following that are three bitflags for position values which x, y, and z being signaled by their respective bits. All of the remains bits above are used for the bone id. Example code for parsing each uint16_t value is shown below.
+
+```c
+
+uint16_t instruction;
+fread(&instruction, sizeof(uint16_t), 1, fp);
+uint16_t bone_id = instruction >> 9;
+bool pos_x = instruction & 0x100 ? true : false;
+bool pos_y = instruction & 0x80 ? true : false;
+bool pos_z = instruction & 0x40 ? true : false;
+bool rot_x = instruction & 0x20 ? true : false;
+bool rot_y = instruction & 0x10 ? true : false;
+bool rot_z = instruction & 0x08 ? true : false;
+```
 
 ## Block 2
 
