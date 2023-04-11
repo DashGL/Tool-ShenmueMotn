@@ -131,8 +131,15 @@ While I don't work with Bézier curves, what I think the bitflags are indicating
 
 ## Block 5
 
-- Float values for easing
-- FLoat value for key frame
+Block 5 is the last section with the most ambiuity, which will need to be verified with an implimentation. This section contains the `easingA` value (if bitflag defined), the `easingB` value if bitflag defined and the keyframe value itself. 
+
+All of these values are two byte values. Which means there are `easing`, `rot` and `pos` values in this section. The number of values is equal to the number of easing bits defined for easing in block for, plus an implicit value for each key frame. 
+
+There are a few open questions for how to interpret this sections. 
+1. Order - Is the order [ `easingA`, `easingB`, `value` ], or [ `easingA`, `value`, `easingB` ]
+2. Easing - It is assumed these are half floats, but there could be some other mechanism of encoding
+3. Pos - It is assumed these are half floats, but there could be some other mechanism of encoding
+4. Rot - It is thought these are degrees where 0x00 is 0 degrees, 0x800 is 180 degress and 0x1000 is 360 degrees, which will be needed to convert to radians. 
 
 # License
 
