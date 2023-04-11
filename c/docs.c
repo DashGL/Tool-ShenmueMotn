@@ -39,8 +39,19 @@ typedef struct {
 
 typedef struct {
 	uint32_t animOfs;
+	uint32_t namePtr;
 	char name[0x40];
 } AnimLocation_t;
+
+typedef struct {
+	uint16_t frameCount;
+	uint16_t block1Ofs;
+	uint16_t block2Ofs;
+	uint16_t block3Ofs;
+	uint16_t block4Ofs;
+	uint16_t block5Ofs;
+} MotnAnimHeader_t;
+
 
 void parseAnimation(FILE *fp, uint32_t animOfs);
 float decodeFloat16(uint16_t binary);
@@ -60,7 +71,8 @@ int main() {
 
 	// Read the file header
 	fread(&header, sizeof(MotnFileHeader_t), 1, fp);
-	
+	header.animCount-=1;
+
 	printf("File Header\n");
 	printf("Table: 0x%x\n", header.tableOfs);
 	printf("Name: 0x%x\n", header.nameOfs);
@@ -69,7 +81,7 @@ int main() {
 	printf("Length: 0x%x\n", header.byteLength);
 
 	// Allocate the animation list to the number of animations
-	animList = calloc(header.animCount, sizeof(AnimLocation_t));
+	animList = malloc(header.animCount * sizeof(AnimLocation_t));
 
 	// First read the offset to the data for each animation
 	fseek(fp, header.tableOfs, SEEK_SET);
@@ -80,33 +92,54 @@ int main() {
 	}
 
 	// Read the name for each animation
-	for (int i = 0; i < header.animCount - 1; i++) {
-		fseek(fp, header.nameOfs, SEEK_SET);
-		fread(&namePtr, sizeof(uint32_t), 1, fp);
-		header.nameOfs+=4;
-		
-		fseek(fp, namePtr, SEEK_SET);
-		int ch;
-		int j = 0;
-		do {
-			ch = fgetc(fp);
-			animList[i].name[j++] = ch;
-		} while (ch != 0);
-
+	fseek(fp, header.nameOfs, SEEK_SET);
+	for (int i = 0; i < header.animCount; i++) {
+		fread(&animList[i].namePtr, sizeof(uint32_t), 1, fp);
+	}
+	
+	for (int i = 0; i < header.animCount; i++) {
+		fseek(fp, animList[i].namePtr, SEEK_SET);
+		fread(&animList[i].name, 0x40, sizeof(char), fp);
 	}
 
 	// Read an animation and convert it to JSON
+	printf("%s\n", animList[242].name);
 	parseAnimation(fp, animList[242].animOfs);
 
 	// Free memory and close Motion File
-	free(animList);
 	fclose(fp);
+	
+	free(animList);
 
 }
 
 void parseAnimation(FILE *fp, uint32_t animOfs) {
 
+	MotnAnimHeader_t header;
+
 	fseek(fp, animOfs, SEEK_SET);
+	fread(&header, sizeof(MotnAnimHeader_t), 1, fp);
+	header.block1Ofs = 0x0c;
+
+	printf("File Header\n");
+	printf("Frames: 0x%x\n", header.frameCount);
+	printf("Block 1 Ofs: 0x%x\n", header.block1Ofs);
+	printf("Block 2 Ofs: 0x%x\n", header.block2Ofs);
+	printf("Block 3 Ofs: 0x%x\n", header.block3Ofs);
+	printf("Block 4 Ofs: 0x%x\n", header.block4Ofs);
+	printf("Block 5 Ofs: 0x%x\n", header.block5Ofs);
 	
+	// Block 1
+
+	uint16_t block1Len = header.block2Ofs - header.block1Ofs;
+	uint32_t block1Ofs = animOfs + header.block1Ofs;
+	fseek(fp, block1Ofs, SEEK_SET);
+
+	printf("Block 1 Length: 0x%x\n", block1Len);
+	printf("Block 1 Offset: 0x%x\n", block1Ofs);
+
+	for(int i = 0; i < block1Len; i+= 2) {
+
+	}
 
 }
