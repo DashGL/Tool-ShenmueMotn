@@ -121,7 +121,11 @@ Following Block 2, Block 2 contains a list of bytes for the specific intermediat
 
 ## Block 4
 
-- Easing Values
+Block 4 is a bitfield for each frame value. The summarize the example we are running with, if in block 3 there were three intermediate frames. And in block 3 the intermetidate frames were defined as 12, 18, 22. Then we would have five key frames, 0, 12, 18, 22, 36. In this block 2 bits are provided per-frame to define if easing values are defined for these key frames when reading the key frame values from block 5. 
+
+![block4](https://user-images.githubusercontent.com/25621780/231153691-d6305e56-4742-4b1f-b1c2-a968c1a806d2.png)
+
+The image above shows the bit layout of this section. Each bone-axis pair is separated into its own section of bytes. The number of bytes is the rounded up quotient of the number of frames divided by 4. In the example we have 5 frames, so there would be two bytes. If we say that for bone 0 pos x have 5 key frames, there would be 2 bytes. If bone 0 pos y has two key frames that would be one byte. The bitflags for pairs are not a continuous bitfield, but are bits separated into a sequence of bytes per category. This is effectively wasted space, but it's not a lot of wasted space. 
 
 ## Block 5
 
