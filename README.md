@@ -1,4 +1,4 @@
-# Tool-ShenmueMotn
+# Shenmue Motion Tools
 
 This repository contains tools for parsing motn files from Shenmue with Nodejs and C.
 Implementing the animations is out of scope from this repository, which describes 
