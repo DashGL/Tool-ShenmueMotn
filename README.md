@@ -111,7 +111,9 @@ bool rot_z = instruction & 0x08 ? true : false;
 
 ## Block 2
 
-- Number of key frames
+Block 2 defines the number of intermediate keyframes for each bone-axis pair. What this means is that for each axis, a byte will be defined to show how many keyframes exist for that pair to be read in the following blocks. This means that is the bits for pos x, y, z were set for bone 0 in the previous block. there will be three bytes in block 2 defining the number of intermediate keyframes for each of these axis. 
+
+For axis, the first and last keyframe are implied. That means is that for example if a value of 0 is provided for a byte, that means there are two keyframes, the first and last one. If a value of three is provided that actually means there are 5 key frames total including the first and last ones. 
 
 ## Block 3
 
