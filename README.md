@@ -125,6 +125,10 @@ Block 4 is a bitfield for each frame value. The summarize the example we are run
 
 The image above shows the bit layout of this section. Each bone-axis pair is separated into its own section of bytes. The number of bytes is the rounded up quotient of the number of frames divided by 4. In the example we have 5 frames, so there would be two bytes. If we say that for bone 0 pos x have 5 key frames, there would be 2 bytes. If bone 0 pos y has two key frames that would be one byte. The bitflags for pairs are not a continuous bitfield, but are bits separated into a sequence of bytes per category. This is effectively wasted space, but it's not a lot of wasted space. 
 
+![curves](https://user-images.githubusercontent.com/25621780/231160756-c920633a-a4bd-4e36-8a2f-804807b97d37.png)
+
+While I don't work with Bézier curves, what I think the bitflags are indicating is the precense of the two points labeled A and B in the firgure above to adjust the easing for calculating the interoplated frame-by-frame values in between the key frames. This section is not defining the values for the easing curves, but the booleans on whether to read the easing values in the next block. 
+
 ## Block 5
 
 - Float values for easing
