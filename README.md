@@ -2,7 +2,7 @@
 
 This repository contains tools for parsing motn files from Shenmue with Nodejs and C.
 Implementing the animations is out of scope from this repository, which describes 
-the format and how to read the values from the files. \An implementation will be needed to confirm the interpretation of the format
+the format and how to read the values from the files. An implementation will be needed to confirm the interpretation of the format
 described within this document. 
 
 ## C
